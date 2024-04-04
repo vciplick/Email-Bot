@@ -3,15 +3,13 @@ from email.mime.text import MIMEText
 import random
 import click
 import csv
+import configparser
 
 subject = "Christmas Book Exchange 2023 Assignment"
 start = "Hello "
 body = "For the Christmas 2023 book exchange, you have been assigned: "
 end = "Sincerely, \n Tori's email bot"
-sender = "tciplickas@gmail.com"
-##TODO: move app password to config
-## old one deleted because im an idiot and commited it to a public repository for five minutes 
-password = "---"
+
 
 def get_names_emails(file):
     res = []
@@ -27,7 +25,6 @@ def get_names_emails(file):
     return res
 
 def send_email(subject, body, sender, recipient, password):
-
     msg = MIMEText(body)
     msg['Subject'] = subject
     msg['From'] = sender
@@ -40,6 +37,7 @@ def send_email(subject, body, sender, recipient, password):
 @click.command
 @click.option('--input-file', '-f', help='file input containing comma separated [name,email]')
 def assign_books(input_file): 
+
     if (input_file == None):
         print("Input file required! use --help for more info.")
         exit()
@@ -54,6 +52,15 @@ def assign_books(input_file):
         message = start + gifter_name + ",\n\n" + body + recipient_name + "\n\n" + end
         send_email(subject, message, sender, gifter_email, password)
 
+def get_credentials():
+    config = configparser.ConfigParser()
+    config.read("passwords.config")
+    email = config["DEFAULT"]["email"]
+    password = config["DEFAULT"]["password"]
+    return email, password
+
 
 if __name__=="__main__": 
-    assign_books()
+    sender, password = get_credentials()
+    print(sender, password)
+    #assign_books()
