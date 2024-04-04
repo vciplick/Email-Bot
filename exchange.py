@@ -9,7 +9,9 @@ start = "Hello "
 body = "For the Christmas 2023 book exchange, you have been assigned: "
 end = "Sincerely, \n Tori's email bot"
 sender = "tciplickas@gmail.com"
-password = "ifvw hrfk tiyb hakk"
+##TODO: move app password to config
+## old one deleted because im an idiot and commited it to a public repository for five minutes 
+password = "---"
 
 def get_names_emails(file):
     res = []
