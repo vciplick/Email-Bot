@@ -5,9 +5,12 @@ import click
 import csv
 import configparser
 
-subject = "Christmas Book Exchange 2023 Assignment"
+#############################
+# Email Contents Constants #
+#############################
+subject = "Christmas Book Exchange 2024 Assignment"
 start = "Hello "
-body = "For the Christmas 2023 book exchange, you have been assigned: "
+body = "For the Christmas 2024 book exchange, you have been assigned: "
 end = "Sincerely, \n Tori's email bot"
 
 
@@ -36,7 +39,7 @@ def send_email(subject, body, sender, recipient, password):
 
 @click.command
 @click.option('--input-file', '-f', help='file input containing comma separated [name,email]')
-def assign_books(input_file): 
+def assign_books_and_email(input_file): 
 
     if (input_file == None):
         print("Input file required! use --help for more info.")
@@ -46,6 +49,8 @@ def assign_books(input_file):
     random.shuffle(people)
     n = len(people)
     for i in range(n):
+        # Recipient is simply the person after them in the list 
+        # could I make this better? Maybe. Does it work? yes. 
         gifter_name, gifter_email = people[i]
         r_i = (i+1) % n
         recipient_name, _ = people[r_i]
@@ -55,12 +60,11 @@ def assign_books(input_file):
 def get_credentials():
     config = configparser.ConfigParser()
     config.read("passwords.config")
-    email = config["DEFAULT"]["email"]
-    password = config["DEFAULT"]["password"]
+    email = config["LOGIN"]["email"]
+    password = config["LOGIN"]["password"]
     return email, password
 
 
 if __name__=="__main__": 
     sender, password = get_credentials()
-    print(sender, password)
-    #assign_books()
+    assign_books_and_email()
